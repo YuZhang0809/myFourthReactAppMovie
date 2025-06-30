@@ -1,0 +1,133 @@
+/* 全局样式与CSS变量 */
+:root {
+  --font-family-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+  --color-text: #e2e8f0;
+  --color-bg: #1a202c;
+  --color-primary: #2d3748;
+  --color-secondary: #4a5568;
+  --border-radius: 8px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+/* 基础样式重置 */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-sans);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.5;
+}
+
+/* App 容器布局 */
+#root {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  font-size: 2.5rem;
+  margin-bottom: 2rem;
+  color: #a0aec0;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+main {
+  min-height: 300px; /* 防止内容过少时塌陷 */
+}
+
+/* SearchBar 组件样式 */
+.search-form { /* 建议在 SearchBar.jsx 的 form 上添加这个类名 */
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.search-form input {
+  width: 100%;
+  max-width: 500px;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--color-secondary);
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.search-form input:focus {
+  outline: none;
+  border-color: #63b3ed;
+  box-shadow: 0 0 0 3px rgba(99, 179, 237, 0.3);
+}
+
+.search-form button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border: none;
+  background-color: #3182ce;
+  color: #fff;
+  transition: background-color 0.2s;
+}
+
+.search-form button:hover {
+  background-color: #2b6cb0;
+}
+
+/* MovieList 组件样式 */
+.movie-list { /* 建议在 MovieList.jsx 的最外层div上添加这个类名 */
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 2rem;
+  list-style: none; /* 如果使用了 ul/li */
+}
+
+/* MovieCard 组件样式 */
+.movie-card { /* 建议在 MovieCard.jsx 的最外层div上添加这个类名 */
+  background-color: var(--color-primary);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s, box-shadow 0.2s;
+  text-align: left;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.movie-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.movie-card-info {
+  padding: 1rem;
+}
+
+.movie-card-info h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* 防止标题过长破坏布局 */
+}
+
+.movie-card-info p {
+  font-size: 0.9rem;
+  color: #a0aec0;
+}
