@@ -63,4 +63,24 @@
   - **目标**: 在应用初次加载时，默认展示热门电影列表。
   - **验收标准**: 打开应用时，不再是空白提示，而是直接调用API获取热门电影并展示。
 
+### 阶段七：进阶状态管理与代码优化（预计总耗时：1.5小时）
+
+> **技术核心**：本阶段将用 useReducer 替代 useState 或 localStorage 的直接操作，集中管理"待看清单"状态，并为后续引入 Context 做准备。
+
+- **任务 7.1: 设计 Watchlist Reducer（约20分钟）**
+  - **目标**：在 `src/hooks` 目录下创建 `watchlistReducer.js`，定义 reducer 逻辑，支持添加、移除、清空等操作。
+  - **验收标准**：reducer 能正确处理 `ADD`、`REMOVE`、`CLEAR` 等 action，返回新的待看清单数组。
+
+- **任务 7.2: 在组件中用 useReducer 替换 useState（约20分钟）**
+  - **目标**：在管理"待看清单"的组件（如 App.jsx 或 Watchlist 相关组件）中，用 useReducer 替换 useState。
+  - **验收标准**：所有对"待看清单"的操作都通过 dispatch 分发 action，状态更新逻辑集中在 reducer。
+
+- **任务 7.3: 同步 localStorage（约20分钟）**
+  - **目标**：在 useReducer 的副作用中（如 useEffect），实现"待看清单"与 localStorage 的同步，保证刷新页面后数据不丢失。
+  - **验收标准**：添加/移除/清空待看清单后，localStorage 中的数据同步更新。
+
+- **任务 7.4: 组件交互与 UI 测试（约30分钟）**
+  - **目标**：确保 MovieDetails、MovieList 等组件通过 dispatch 正确操作"待看清单"，并在 UI 上实时反映状态变化。
+  - **验收标准**：添加、移除、清空操作在界面和 localStorage 中都能正确生效。
+
  
