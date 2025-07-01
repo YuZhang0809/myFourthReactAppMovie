@@ -27,7 +27,7 @@ export function SearchBar ({ onSearch }){
                 value={searchItem}
             />
             {/* 4. (最佳实践) 为按钮明确 type="submit" */}
-            <button type="submit">Search</button>
+            <button type="submit" className="btn btn-primary">Search</button>
         </form>
     )
 }

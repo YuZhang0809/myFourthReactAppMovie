@@ -131,3 +131,78 @@ main {
   font-size: 0.9rem;
   color: #a0aec0;
 }
+
+/* === 通用按钮样式 === */
+.btn {
+  padding: 0.65rem 1.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--border-radius);
+  border: 2px solid transparent;
+  transition: background-color 0.2s, color 0.2s, transform 0.1s;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:focus-visible {
+  outline: 2px solid #63b3ed;
+  outline-offset: 2px;
+}
+
+/* 主要按钮 */
+.btn-primary {
+  background-color: #3182ce;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: #2b6cb0;
+}
+
+/* 次要按钮 */
+.btn-secondary {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  border: 2px solid #4a5568;
+}
+
+.btn-secondary:hover {
+  background-color: #4a5568;
+}
+
+/* 危险按钮 */
+.btn-danger {
+  background-color: #e53e3e;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #c53030;
+}
+
+/* === 布局辅助类 === */
+.header-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.detail-actions {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.load-more-btn {
+  margin: 2rem auto;
+}

@@ -1,6 +1,6 @@
-import { useEffect } from "react"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { fetchDetail } from "../services/api"
+import { addToWatchlist, removeFromWatchlist, isInWatchlist } from "../services/storage";
 
 export function MovieDetails({movieID, onBack}) {
 
@@ -8,6 +8,7 @@ export function MovieDetails({movieID, onBack}) {
     const [MovieDetail,setMovieDetail] = useState({})
     const[isLoading, setIsLoading] = useState(false)
     const[error, setError] = useState(null)
+    const[inWatchList, setInWatchList] = useState(false)
 
     useEffect(() =>{
             const fetchData = async() => {
@@ -25,19 +26,38 @@ export function MovieDetails({movieID, onBack}) {
             
         }
     fetchData()
+    setInWatchList(isInWatchlist(movieID))
     }
     ,[movieID])
 
+    function handleClickWatchList() {
+        if (inWatchList) {
+            removeFromWatchlist(movieID)
+            setInWatchList(false)           
+        }
+        else{
+            addToWatchlist(MovieDetail)
+            setInWatchList(true)
+        }
+    }
+
     return (
         <div className="movie-details">
-        <button onClick={onBack}>Go Back</button>
+        <div className="detail-actions">
+          <button onClick={onBack} className="btn btn-secondary">Go Back</button>
+          {inWatchList?
+            <button onClick={handleClickWatchList} className="btn btn-danger">Remove from watch list</button>
+            :
+            <button onClick={handleClickWatchList} className="btn btn-primary">Add to watch list</button>
+          }
+        </div>
         {isLoading && <p>正在加载中...</p>}
         {error && <p>{error}</p>}
         {!isLoading && !error && 
             <div>
-                <title>Title : {MovieDetail.original_title}</title>
+                <h2>Title : {MovieDetail.original_title}</h2>
                 <p>Detail : {MovieDetail.overview}</p>
-                <img src={ImgBaseURL + MovieDetail.poster_path}/>
+                <img src={ImgBaseURL + MovieDetail.poster_path} alt={MovieDetail.original_title}/>
             </div>
             }
         </div>
