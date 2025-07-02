@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react"
 import { fetchDetail } from "../services/api"
-import { addToWatchlist, removeFromWatchlist, isInWatchlist } from "../services/storage";
 
-export function MovieDetails({movieID, onBack}) {
+export function MovieDetails({movieID, onBack, dispatch, watchList}) {
 
     const ImgBaseURL = 'https://image.tmdb.org/t/p/w500';
     const [MovieDetail,setMovieDetail] = useState({})
@@ -26,17 +25,17 @@ export function MovieDetails({movieID, onBack}) {
             
         }
     fetchData()
-    setInWatchList(isInWatchlist(movieID))
+    setInWatchList(watchList?.some(m => m.id === movieID))
     }
-    ,[movieID])
+    ,[movieID,watchList])
 
     function handleClickWatchList() {
         if (inWatchList) {
-            removeFromWatchlist(movieID)
+            dispatch({type:"REMOVE",payload: movieID})
             setInWatchList(false)           
         }
         else{
-            addToWatchlist(MovieDetail)
+            dispatch({type:"ADD",payload: MovieDetail})
             setInWatchList(true)
         }
     }

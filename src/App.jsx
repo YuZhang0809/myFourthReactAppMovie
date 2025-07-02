@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useReducer} from 'react'
 import './App.css'
 import { SearchBar } from './components/SearchBar'
 import { searchMovies, fetchPopular } from "./services/api";
 import { MovieList } from "./components/MovieList";
 import { MovieDetails } from "./components/MovieDetails"
 import { getWatchlist } from "./services/storage";
+import { watchlistReducer, initialState } from "./hooks/watchlistReducer";
 
 
 function App() {
@@ -18,7 +19,8 @@ const[page, setPage] = useState(1)
 const[totalPage, setTotalPage] = useState(1)
 const[isLoadingMore, setIsLoadingMore] = useState(false)
 const[viewMode, setViewMode] = useState('all')
-const[watchList, setWatchList] = useState([])
+//const[watchList, setWatchList] = useState([])
+const[watchList, dispatch] = useReducer(watchlistReducer, initialState, () => getWatchlist())
 
 const handleSelectMovie = (movieID) => {setSelectedMovie(movieID)}
 const handleBackToList = () => {setSelectedMovie(null)}
@@ -41,6 +43,15 @@ const fetchPop = async() => {
 fetchPop()
 }
 , [])
+
+useEffect(() =>{
+  setError(null)
+  try {
+    localStorage.setItem('watchList', JSON.stringify(watchList))
+  } catch (error) {
+    setError(error.message)
+  }
+},[watchList])
 
 const handleMore = async (searchItem, page) => {
   setIsLoadingMore(true)
@@ -83,22 +94,20 @@ const handleSearch = async (searchItem) => {
 
 const hanldWatchList = () => {
   setError(null)
-  setIsLoading(true)
   if (viewMode === 'all'){
     try {
-      setWatchList(getWatchlist())
       setViewMode('watchlist')
     } catch (error) {
       setError(error.message)
     }
-    finally{
-      setIsLoading(false)
-    }
   }
   else{
     setViewMode('all')
-    setIsLoading(false)
   }
+}
+
+const hanldClearAllWatch = () => {
+  dispatch({"type":"CLEAR"})
 }
 
   return (
@@ -115,8 +124,15 @@ const hanldWatchList = () => {
                 </div>
                 {error && <p>出错了: {error}</p>}
                 {!isLoading && !error && !selectedMovie && movies.length === 0 && <p>输入关键词搜索电影吧！</p>}
-                {!isLoading && !error && !selectedMovie && movies.length > 0 && <MovieList movies={movies} onMovieClick={handleSelectMovie}/>}
-                {!isLoading && !error && selectedMovie && <MovieDetails movieID={selectedMovie} onBack={handleBackToList}/>}
+                {!isLoading && !error && !selectedMovie && movies.length > 0 && <MovieList movies={movies} onMovieClick={handleSelectMovie} dispatch={dispatch} watchList={watchList}/>}
+                {!isLoading && !error && selectedMovie && (
+                  <MovieDetails
+                    movieID={selectedMovie}
+                    onBack={handleBackToList}
+                    dispatch={dispatch}
+                    watchList={watchList}
+                  />
+                )}
                 {page < totalPage && <button onClick={() => handleMore(searchItem, page)} className="btn btn-secondary load-more-btn">加载更多</button>}
                 {isLoadingMore && <p>正在加载更多...</p>} 
                 </div>
@@ -126,7 +142,7 @@ const hanldWatchList = () => {
                   <button onClick={hanldWatchList} className="btn btn-secondary">搜索结果/热门数据</button>  
                 </div>
                 {!isLoading && !error && watchList.length === 0 && <p>暂无收藏，去添加吧</p>}
-                {!isLoading && !error && watchList.length > 0 && <MovieList movies={watchList} />}
+                {!isLoading && !error && watchList.length > 0 && <><button onClick={hanldClearAllWatch}>清除所有收藏</button><MovieList movies={watchList}/></>}
                 </div>
         }
       </main>
